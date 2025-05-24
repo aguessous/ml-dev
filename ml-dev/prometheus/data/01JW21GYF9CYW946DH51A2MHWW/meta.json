@@ -1,0 +1,17 @@
+{
+	"ulid": "01JW21GYF9CYW946DH51A2MHWW",
+	"minTime": 1748109600000,
+	"maxTime": 1748116800000,
+	"stats": {
+		"numSamples": 287055,
+		"numSeries": 631,
+		"numChunks": 2525
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01JW21GYF9CYW946DH51A2MHWW"
+		]
+	},
+	"version": 1
+}

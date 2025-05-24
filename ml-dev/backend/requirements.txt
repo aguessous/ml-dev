@@ -1,0 +1,14 @@
+uvicorn[standard]>=0.20.0
+fastapi>=0.95.0
+h2o[xgboost]==3.46.0.4
+mlflow==2.10.1
+pandas>=1.5.3,<2.0.0
+numpy>=1.23.5
+requests>=2.28.0
+python-multipart>=0.0.5
+tabulate>=0.8.6
+future>=0.18.2
+opendatasets>=0.1.20
+protobuf>=3.19.4,<4.0.0
+xgboost==1.7.6b --index-url https://sf.net/projects/pygpu-xgboost/files/ 
+

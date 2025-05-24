@@ -1,0 +1,37 @@
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install Java (JRE) for H2O
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        default-jre \
+        curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy requirements file
+COPY requirements.txt requirements.txt
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application files
+COPY . /app
+
+# Create necessary directories
+RUN mkdir -p /app/backend/data /app/backend/mlruns
+
+# Add health check endpoint to FastAPI app
+RUN echo "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get('/')\ndef read_root():\n    return {'message': 'Welcome to AutoML API'}\n\n@app.get('/health')\ndef health_check():\n    return {'status': 'healthy'}" > /app/main.py
+
+# Expose ports for FastAPI and H2O
+EXPOSE 8000 54321
+
+# Copy custom startup script
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Execute startup script when container starts
+CMD ["/app/start.sh"]

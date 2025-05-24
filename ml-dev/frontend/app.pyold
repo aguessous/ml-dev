@@ -1,0 +1,43 @@
+import streamlit as st
+import requests
+import config
+
+st.set_page_config(page_title="AutoML Dashboard", layout="wide")
+
+st.title("AutoML Dashboard")
+
+# --- barre latérale config -----------------------------------------------
+st.sidebar.title("Configuration")
+st.sidebar.write(f"**Backend URL:** {config.BACKEND_URL}")
+st.sidebar.write(f"**MLflow URL:** {config.MLFLOW_TRACKING_URL}")
+
+# --- vérification de santé backend ---------------------------------------
+with st.spinner("Vérification du backend…"):
+    try:
+        r = requests.get(f"{config.BACKEND_URL}/health", timeout=5)
+        if r.status_code == 200:
+            st.success("Backend service is healthy ✔")
+        else:
+            st.error(f"Backend responded with status {r.status_code}")
+    except Exception as exc:
+        st.error(f"Connexion impossible au backend : {exc}")
+
+st.markdown('---')
+
+st.header("Bienvenue dans votre environnement AutoML")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.info("**Backend API**")
+    if st.button("Ouvrir l'API", key="api"):
+        st.markdown(f"[Ouvrir]({config.BACKEND_URL})", unsafe_allow_html=True)
+
+with col2:
+    st.info("**MLflow Tracking UI**")
+    if st.button("Ouvrir MLflow", key="mlflow"):
+        st.markdown(f"[Ouvrir]({config.MLFLOW_TRACKING_URL})", unsafe_allow_html=True)
+
+with col3:
+    st.info("**Jupyter Lab (optionnel)**")
+    st.write("Si vous exposez Jupyter : http://localhost:8888")
